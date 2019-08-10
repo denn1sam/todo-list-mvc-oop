@@ -11,7 +11,7 @@ class ListView extends EventEmitter {
       .on('itemEdited', () => this.rebuildList())
       .on('editedItemSaved', () => this.rebuildList());
 
-    elements.list.addEventListener('change', event => this
+    elements.list.addEventListener('change', (event) => this
       .emit('listModified', event.target.selectedIndex));
     elements.addButton.addEventListener('click', () => this
       .emit('addButtonClicked'));
@@ -78,40 +78,5 @@ class ListView extends EventEmitter {
     const saveBtn = textField.getElementsByClassName('save-btn')[0];
 
     saveBtn.addEventListener('click', () => this.emit('saveButtonClicked', { id, textField }));
-  }
-}
-
-class ListController {
-  constructor(model, view) {
-    this._model = model;
-    this._view = view;
-
-    view.on('addButtonClicked', () => this.addItem());
-    view.on('delButtonClicked', index => this.delItem(index));
-    view.on('checkButtonClicked', index => this.checkItem(index));
-    view.on('saveButtonClicked', item => this.saveEditedItem(item));
-  }
-
-  addItem() {
-    const text = inputElement.value;
-    if (!text) return;
-
-    const id = +new Date().getTime();
-
-    this._model.addItem({ text, id });
-    inputElement.value = '';
-  }
-
-  checkItem(id) {
-    this._model.checkItem(id);
-  }
-
-  delItem(id) {
-    this._model.delItem(id);
-  }
-
-  saveEditedItem({ id, textField }) {
-    const editedTaskText = textField.getElementsByClassName('input-task-edit')[0].value;
-    this._model.saveEditedItem(id, editedTaskText);
   }
 }
